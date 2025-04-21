@@ -1,0 +1,29 @@
+# This is a workflow to update the submodules on the parent repo
+name: Update submodule
+# Controls when the action will run. Triggers the workflow if Spotless
+# Format succeeds on the main-staging branch, or when manually triggered
+on: 
+  workflow_run:
+    workflows:
+      - "Spotless Format"
+    branches:
+      - main-staging
+    types:
+      - completed
+  workflow_dispatch:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  update_submodule:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # This job only runs if format succeeds
+    needs: format
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Sends a webhook to the parent repo to update submodules
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: Podcakero/GaCo-2026-Testing
+          event-type: submodule-update
