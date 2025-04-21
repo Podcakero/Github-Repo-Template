@@ -1,13 +1,13 @@
 # This is a workflow to update the submodules on the parent repo
 name: Update submodule
 # Controls when the action will run. Triggers the workflow if Spotless
-# Format succeeds on the main-staging branch, or when manually triggered
-on: 
+# Format succeeds on the main branch, or when manually triggered
+on:
   workflow_run:
     workflows:
-      - "Spotless Format"
+      - "Gradle Build"
     branches:
-      - main-staging
+      - main
     types:
       - completed
   workflow_dispatch:
